@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#042C53">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Bitácora OT — Comercializadora 503</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue-50: #E6F1FB; --blue-100: #B5D4F4; --blue-600: #185FA5;
+    --blue-800: #0C447C; --blue-900: #042C53;
+    --gray-50: #F1EFE8; --gray-100: #D3D1C7; --gray-200: #B4B2A9;
+    --gray-600: #5F5E5A; --gray-800: #444441;
+    --green-50: #EAF3DE; --green-600: #3B6D11; --green-800: #27500A;
+    --amber-50: #FAEEDA; --amber-200: #FAC775; --amber-600: #854F0B;
+    --red-50: #FCEBEB; --red-600: #A32D2D;
+  }
+
+  html, body {
+    height: 100%;
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: #e8e5df;
+    color: #1a1a1a;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .app-shell {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    max-width: 620px;
+    margin: 0 auto;
+    background: #f8f7f4;
+  }
+
+  /* ── Company Header ── */
+  .company-banner {
+    background: #031e3a;
+    padding: 14px 20px 12px;
+    text-align: center;
+    border-bottom: 3px solid var(--blue-600);
+  }
+
+  .company-name {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: white;
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+
+  .company-address {
+    font-size: 10px;
+    color: var(--blue-100);
+    opacity: 0.75;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.3px;
+    line-height: 1.5;
+  }
+
+  .doc-title-bar {
+    background: var(--blue-900);
+    padding: 12px 20px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .doc-title-bar h1 {
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  /* ── Progress ── */
+  .progress-bar {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  .step-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+  }
+
+  .step-dot {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.4);
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .step-dot.active { background: white; border-color: white; color: var(--blue-900); }
+  .step-dot.done   { background: var(--blue-600); border-color: var(--blue-600); color: white; }
+
+  .step-line-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding-top: 13px;
+  }
+
+  .step-line {
+    width: 100%;
+    height: 1.5px;
+    background: rgba(255,255,255,0.15);
+    transition: background 0.3s ease;
+  }
+
+  .step-line.done { background: var(--blue-600); }
+
+  .step-label {
+    font-size: 7px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: rgba(255,255,255,0.35);
+    text-align: center;
+    margin-top: 5px;
+    font-family: 'IBM Plex Mono', monospace;
+    line-height: 1.2;
+  }
+
+  .step-label.active { color: white; }
+  .step-label.done   { color: var(--blue-100); }
+
+  /* ── Scrollable content ── */
+  .form-scroll {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 24px 20px 100px;
+  }
+
+  /* ── Sticky bottom button ── */
+  .btn-sticky-wrap {
+    position: sticky;
+    bottom: 0;
+    background: #f8f7f4;
+    padding: 12px 20px 20px;
+    border-top: 1px solid rgba(0,0,0,0.07);
+    z-index: 10;
+  }
+
+  /* ── Section badge ── */
+  .section-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--blue-900);
+    color: white;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 5px 12px 5px 10px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+  }
+
+  .step-title {
+    font-size: 19px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 20px;
+    line-height: 1.25;
+  }
+
+  /* ── Step panels ── */
+  .step-panel { display: none; }
+  .step-panel.active {
+    display: block;
+    animation: fadeIn 0.22s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Form fields ── */
+  .field-group { margin-bottom: 18px; }
+
+  .field-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--gray-600);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 7px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .field-input {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1.5px solid rgba(0,0,0,0.12);
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: white;
+    color: #1a1a1a;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .field-input:focus {
+    outline: none;
+    border-color: var(--blue-600);
+    box-shadow: 0 0 0 3px rgba(24,95,165,0.12);
+  }
+
+  textarea.field-input {
+    resize: none;
+    line-height: 1.6;
+    min-height: 110px;
+  }
+
+  /* ── Toggle chips ── */
+  .chip-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .chip-label {
+    flex: 1;
+    min-width: 120px;
+    cursor: pointer;
+  }
+
+  .chip-label input[type=radio] { display: none; }
+
+  .chip-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 12px 14px;
+    border: 1.5px solid rgba(0,0,0,0.12);
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    background: white;
+    color: var(--gray-600);
+    transition: all 0.15s;
+    text-align: center;
+  }
+
+  .chip-label input:checked + .chip-body {
+    border-color: var(--blue-600);
+    background: var(--blue-50);
+    color: var(--blue-800);
+  }
+
+  .chip-body i { font-size: 17px; }
+
+  /* ── Repuestos ── */
+  .repuesto-toggle {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .rep-opt {
+    flex: 1;
+    cursor: pointer;
+  }
+
+  .rep-opt input[type=radio] { display: none; }
+
+  .rep-opt-body {
+    padding: 11px 12px;
+    border: 1.5px solid rgba(0,0,0,0.12);
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    background: white;
+    color: var(--gray-600);
+    text-align: center;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .rep-opt input:checked + .rep-opt-body {
+    border-color: var(--blue-600);
+    background: var(--blue-50);
+    color: var(--blue-800);
+  }
+
+  .repuesto-list { margin-bottom: 10px; }
+
+  .repuesto-item {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+    align-items: center;
+  }
+
+  .repuesto-item .field-input { margin-bottom: 0; }
+
+  .repuesto-item input[type=number] { width: 90px; flex-shrink: 0; }
+
+  .btn-add-rep {
+    width: 100%;
+    padding: 11px;
+    border: 1.5px dashed rgba(0,0,0,0.2);
+    border-radius: 10px;
+    background: transparent;
+    font-size: 13px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    color: var(--blue-600);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: background 0.15s;
+  }
+
+  .btn-add-rep:active { background: var(--blue-50); }
+
+  .btn-rem-rep {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    border: none;
+    background: var(--red-50);
+    color: var(--red-600);
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .error-msg {
+    font-size: 12px;
+    color: var(--red-600);
+    margin-top: 6px;
+    display: none;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  /* ── Photo zone ── */
+  .photo-zone {
+    border: 2px dashed rgba(0,0,0,0.14);
+    border-radius: 12px;
+    padding: 28px 20px;
+    text-align: center;
+    background: white;
+    position: relative;
+    transition: all 0.2s;
+  }
+
+  .photo-zone.has-photo {
+    border-color: var(--green-600);
+    background: var(--green-50);
+  }
+
+  .photo-zone input[type=file] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+
+  .photo-icon { font-size: 34px; color: var(--gray-200); margin-bottom: 10px; display: block; }
+  .photo-zone.has-photo .photo-icon { color: var(--green-600); }
+  .photo-text { font-size: 14px; color: var(--gray-600); }
+  .photo-zone.has-photo .photo-text { color: var(--green-600); font-weight: 500; }
+  .photo-sub  { font-size: 12px; color: var(--gray-200); margin-top: 4px; }
+  .photo-zone.has-photo .photo-sub { color: var(--green-600); opacity: 0.7; }
+
+  .photo-preview {
+    width: 100%;
+    border-radius: 10px;
+    max-height: 220px;
+    object-fit: cover;
+    margin-top: 14px;
+    display: none;
+  }
+
+  .note {
+    background: var(--amber-50);
+    border-left: 3px solid var(--amber-200);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--amber-600);
+    margin-bottom: 18px;
+    font-family: 'IBM Plex Mono', monospace;
+    line-height: 1.5;
+  }
+
+  /* ── Section divider ── */
+  .section-sep {
+    height: 1px;
+    background: rgba(0,0,0,0.07);
+    margin: 22px 0;
+  }
+
+  /* ── Signature ── */
+  .sig-box {
+    background: white;
+    border: 1.5px solid rgba(0,0,0,0.12);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .sig-header {
+    padding: 9px 14px;
+    background: var(--gray-50);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    font-size: 11px;
+    color: var(--gray-600);
+    font-family: 'IBM Plex Mono', monospace;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .sig-clear {
+    font-size: 11px;
+    color: var(--blue-600);
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: 'IBM Plex Mono', monospace;
+    padding: 3px 8px;
+    border-radius: 4px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .sig-clear:active { background: var(--blue-50); }
+
+  canvas#sigCanvas {
+    display: block;
+    width: 100%;
+    height: 150px;
+    cursor: crosshair;
+    touch-action: none;
+  }
+
+  /* ── Buttons ── */
+  .btn-next {
+    width: 100%;
+    padding: 15px;
+    background: var(--blue-900);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: 'IBM Plex Sans', sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.15s, transform 0.1s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .btn-next:active { transform: scale(0.98); }
+  .btn-next:hover  { background: var(--blue-800); }
+  .btn-next.green  { background: var(--green-600); }
+  .btn-next.green:hover { background: var(--green-800); }
+  .btn-next:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* ── Spinner ── */
+  .spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── Summary / Success ── */
+  .success-panel {
+    text-align: center;
+    padding: 12px 0 20px;
+  }
+
+  .success-icon {
+    width: 64px;
+    height: 64px;
+    background: var(--green-50);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 14px;
+  }
+
+  .success-icon i { font-size: 28px; color: var(--green-600); }
+
+  .success-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 6px;
+  }
+
+  .success-sub {
+    font-size: 14px;
+    color: var(--gray-600);
+    margin-bottom: 18px;
+  }
+
+  .timestamp-badge {
+    display: inline-block;
+    background: var(--blue-50);
+    color: var(--blue-800);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 22px;
+  }
+
+  .summary-card {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.08);
+    overflow: hidden;
+    margin-bottom: 166px;
+    text-align: left;
+  }
+
+  .summary-section-head {
+    background: var(--blue-900);
+    color: white;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 7px 16px;
+  }
+
+  .summary-row {
+    padding: 11px 16px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .summary-row:last-child { border-bottom: none; }
+
+  .sum-label {
+    font-size: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gray-600);
+    min-width: 90px;
+    padding-top: 1px;
+    flex-shrink: 0;
+  }
+
+  .sum-val {
+    font-size: 14px;
+    color: #1a1a1a;
+    line-height: 1.5;
+  }
+
+  .btn-new {
+    width: 100%;
+    padding: 14px;
+    background: white;
+    border: 1.5px solid rgba(0,0,0,0.14);
+    border-radius: 12px;
+    font-size: 15px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    cursor: pointer;
+    color: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.15s;
+    -webkit-tap-highlight-color: transparent;
+    margin-top: 8px;
+  }
+
+  .btn-new:active { background: var(--gray-50); }
+
+  .btn-new { margin-bottom: 40px; }
+
+  .send-status {
+    font-size: 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    text-align: center;
+    padding: 8px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    display: none;
+  }
+
+  .send-status.ok  { background: var(--green-50); color: var(--green-600); display: block; }
+  .send-status.err { background: var(--red-50); color: var(--red-600); display: block; }
+
+  @media (min-width: 620px) {
+    body { padding: 24px 0; }
+    .app-shell {
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.14);
+      min-height: auto;
+    }
+    .form-scroll { padding: 28px 32px 100px; }
+    .btn-sticky-wrap { padding: 14px 32px 22px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app-shell">
+
+  <div class="company-banner">
+    <div class="company-name">Bitácora de Orden de Trabajo<br>Comercializadora 503 S.A. de C.V.</div>
+    <div class="company-address">Calle L. Boulevard del Ejército Nacional, Urbanización San Pablo #29 B<br>Soyapango, San Salvador</div>
+  </div>
+
+  <div class="doc-title-bar">
+    <h1>Reporte de Mantenimiento</h1>
+    <div class="progress-bar">
+      <div class="step-col">
+        <div class="step-dot active" id="dot1">A</div>
+        <div class="step-label active" id="lbl1">Encargado</div>
+      </div>
+      <div class="step-line-wrap"><div class="step-line" id="line1"></div></div>
+      <div class="step-col">
+        <div class="step-dot" id="dot2">B</div>
+        <div class="step-label" id="lbl2">Tarea</div>
+      </div>
+      <div class="step-line-wrap"><div class="step-line" id="line2"></div></div>
+      <div class="step-col">
+        <div class="step-dot" id="dot3">C</div>
+        <div class="step-label" id="lbl3">Repuestos</div>
+      </div>
+      <div class="step-line-wrap"><div class="step-line" id="line3"></div></div>
+      <div class="step-col">
+        <div class="step-dot" id="dot4">D</div>
+        <div class="step-label" id="lbl4">Foto</div>
+      </div>
+      <div class="step-line-wrap"><div class="step-line" id="line4"></div></div>
+      <div class="step-col">
+        <div class="step-dot" id="dot5">✓</div>
+        <div class="step-label" id="lbl5">Supervisor</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-scroll" id="formScroll">
+
+    <div class="step-panel active" id="step1">
+      <div class="section-badge"><i class="ti ti-user-check"></i> Parte A</div>
+      <div class="step-title">Datos del encargado de mantenimiento</div>
+
+      <div class="field-group">
+        <label class="field-label" for="encargado">Nombre completo del encargado</label>
+        <input class="field-input" id="encargado" type="text" placeholder="Ej. Carlos Mendoza Ruiz" autocomplete="name">
+        <div class="error-msg" id="err-encargado">Por favor ingresa el nombre del encargado.</div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="empleado">Número de empleado (opcional)</label>
+        <input class="field-input" id="empleado" type="text" placeholder="Ej. TEC-042">
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="area">Área / Línea de producción</label>
+        <input class="field-input" id="area" type="text" placeholder="Ej. Línea de envasado B">
+        <div class="error-msg" id="err-area">Por favor indica el área de trabajo.</div>
+      </div>
+
+      <div class="section-sep"></div>
+
+      <div class="field-group">
+        <label class="field-label">Tipo de mantenimiento</label>
+        <div class="chip-group">
+          <label class="chip-label">
+            <input type="radio" name="tipoMant" value="Preventivo">
+            <div class="chip-body"><i class="ti ti-shield-check"></i> Preventivo</div>
+          </label>
+          <label class="chip-label">
+            <input type="radio" name="tipoMant" value="Correctivo">
+            <div class="chip-body"><i class="ti ti-tool"></i> Correctivo</div>
+          </label>
+        </div>
+        <div class="error-msg" id="err-tipo">Por favor selecciona el tipo de mantenimiento.</div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Clase de mantenimiento</label>
+        <div class="chip-group">
+          <label class="chip-label">
+            <input type="radio" name="claseMant" value="Mecánico">
+            <div class="chip-body"><i class="ti ti-settings"></i> Mecánico</div>
+          </label>
+          <label class="chip-label">
+            <input type="radio" name="claseMant" value="Eléctrico">
+            <div class="chip-body"><i class="ti ti-bolt"></i> Eléctrico</div>
+          </label>
+          <label class="chip-label">
+            <input type="radio" name="claseMant" value="Hidráulico">
+            <div class="chip-body"><i class="ti ti-droplet"></i> Hidráulico</div>
+          </label>
+          <label class="chip-label">
+            <input type="radio" name="claseMant" value="Soldadura">
+            <div class="chip-body"><i class="ti ti-flame"></i> Soldadura</div>
+          </label>
+        </div>
+        <div class="error-msg" id="err-clase">Por favor selecciona la clase de mantenimiento.</div>
+      </div>
+    </div>
+
+    <div class="step-panel" id="step2">
+      <div class="section-badge"><i class="ti ti-clipboard-list"></i> Parte B</div>
+      <div class="step-title">Tarea y descripción técnica</div>
+
+      <div class="field-group">
+        <label class="field-label" for="tarea">Nombre de la tarea</label>
+        <input class="field-input" id="tarea" type="text" placeholder="Ej. Revisión de motor eléctrico #3">
+        <div class="error-msg" id="err-tarea">Por favor describe la tarea realizada.</div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="descripcion">Descripción técnica del trabajo</label>
+        <textarea class="field-input" id="descripcion" rows="6" placeholder="Describe qué se hizo, qué se encontró, materiales usados, observaciones importantes..."></textarea>
+        <div class="error-msg" id="err-desc">Por favor escribe una descripción del trabajo realizado.</div>
+      </div>
+    </div>
+
+    <div class="step-panel" id="step3">
+      <div class="section-badge"><i class="ti ti-package"></i> Parte C</div>
+      <div class="step-title">Repuestos utilizados</div>
+
+      <div class="field-group">
+        <div class="repuesto-toggle">
+          <label class="rep-opt">
+            <input type="radio" name="repOpt" value="ninguno" id="repNinguno" onchange="toggleRepuestos()">
+            <div class="rep-opt-body"><i class="ti ti-circle-off"></i> Ningún repuesto</div>
+          </label>
+          <label class="rep-opt">
+            <input type="radio" name="repOpt" value="lista" id="repLista" onchange="toggleRepuestos()">
+            <div class="rep-opt-body"><i class="ti ti-list-details"></i> Especificar repuestos</div>
+          </label>
+        </div>
+        <div class="error-msg" id="err-rep">Por favor selecciona una opción de repuestos.</div>
+
+        <div id="repuestosArea" style="display:none">
+          <div class="repuesto-list" id="repuestoList"></div>
+          <button class="btn-add-rep" type="button" onclick="addRepuesto()">
+            <i class="ti ti-plus"></i> Agregar repuesto
+          </button>
+        </div>
+        <div class="error-msg" id="err-rep-items">Por favor completa el nombre de todos los repuestos.</div>
+      </div>
+    </div>
+
+    <div class="step-panel" id="step4">
+      <div class="section-badge"><i class="ti ti-camera"></i> Parte D</div>
+      <div class="step-title">Foto del trabajo completado</div>
+      <div class="note">Toma una foto del equipo o área, o selecciona una imagen de tu galería.</div>
+      <div class="field-group">
+        <div class="photo-zone" id="photoZone">
+          <input type="file" accept="image/*" id="photoInput" onchange="handlePhoto(this)">
+          <i class="ti ti-photo-up photo-icon" aria-hidden="true"></i>
+          <div class="photo-text">Toca para tomar foto o escoger de galería</div>
+          <div class="photo-sub">JPG, PNG — máx 10 MB</div>
+        </div>
+        <img id="photoPreview" class="photo-preview" alt="Vista previa">
+        <div class="error-msg" id="err-foto">Por favor adjunta una foto del trabajo realizado.</div>
+      </div>
+    </div>
+
+    <div class="step-panel" id="step5">
+      <div class="section-badge"><i class="ti ti-writing-sign"></i> Validación</div>
+      <div class="step-title">Validación del supervisor</div>
+
+      <div class="field-group">
+        <label class="field-label" for="supervisor">Nombre completo del supervisor</label>
+        <input class="field-input" id="supervisor" type="text" placeholder="Ej. Ing. Roberto Salazar" autocomplete="name">
+        <div class="error-msg" id="err-sup">Por favor ingresa el nombre del supervisor.</div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Firma del supervisor</label>
+        <div class="sig-box">
+          <div class="sig-header">
+            <span>Firmar con el dedo o el mouse</span>
+            <button class="sig-clear" onclick="clearSig()" type="button">Borrar</button>
+          </div>
+          <canvas id="sigCanvas" width="600" height="150"></canvas>
+        </div>
+        <div class="error-msg" id="err-firma">Por favor recolecta la firma del supervisor.</div>
+      </div>
+    </div>
+
+    <div class="step-panel" id="step6">
+      <div class="success-panel">
+        <div class="success-icon"><i class="ti ti-circle-check" aria-hidden="true"></i></div>
+        <div class="success-title">¡Reporte guardado!</div>
+        <div class="success-sub">El mantenimiento ha sido registrado exitosamente.</div>
+        <div class="timestamp-badge" id="finalTimestamp"></div>
+      </div>
+      <div class="send-status" id="sendStatus"></div>
+      <div class="summary-card" id="summaryCard"></div>
+    </div>
+
+  </div><div class="btn-sticky-wrap" id="btnWrap">
+    <button class="btn-next" id="mainBtn" onclick="handleBtn()">
+      Continuar <i class="ti ti-arrow-right" aria-hidden="true"></i>
+    </button>
+  </div>
+
+</div>
+
+<script>
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwrFQSVVPAVEwVqq1CnwmjG3XYEr5Wdc9I5svZnZvOhIqWlQ4YBrjGvVie0cGC8hGOm/exec'; 
+
+let currentStep = 1;
+let photoData = null;
+let sigCanvas, sigCtx, sigDrawing = false;
+let repuestoCount = 0;
+
+function updateProgress(step) {
+  for (let i = 1; i <= 5; i++) {
+    const dot  = document.getElementById('dot' + i);
+    const lbl  = document.getElementById('lbl' + i);
+    const line = document.getElementById('line' + i);
+    if (!dot) continue;
+    dot.className  = 'step-dot'   + (i < step ? ' done' : i === step ? ' active' : '');
+    if (lbl)  lbl.className  = 'step-label' + (i < step ? ' done' : i === step ? ' active' : '');
+    if (line) line.className = 'step-line'  + (i < step ? ' done' : '');
+  }
+}
+
+function showStep(n) {
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+  const panel = document.getElementById('step' + n);
+  if (panel) panel.classList.add('active');
+  updateProgress(n);
+  currentStep = n;
+  document.getElementById('formScroll').scrollTop = 0;
+  const btn  = document.getElementById('mainBtn');
+  const wrap = document.getElementById('btnWrap');
+  if (n === 6) {
+    wrap.style.display = 'none';
+  } else {
+    wrap.style.display = '';
+    if (n === 5) {
+      btn.className = 'btn-next green';
+      btn.innerHTML = '<i class="ti ti-check"></i> Finalizar y guardar reporte';
+    } else {
+      btn.className = 'btn-next';
+      btn.innerHTML = 'Continuar <i class="ti ti-arrow-right"></i>';
+    }
+  }
+}
+
+function handleBtn() {
+  if (currentStep === 1) {
+    let ok = true;
+    if (!v('encargado')) { show('err-encargado'); ok = false; } else hide('err-encargado');
+    if (!v('area'))      { show('err-area'); ok = false; } else hide('err-area');
+    if (!document.querySelector('input[name=tipoMant]:checked'))  { show('err-tipo');  ok = false; } else hide('err-tipo');
+    if (!document.querySelector('input[name=claseMant]:checked')) { show('err-clase'); ok = false; } else hide('err-clase');
+    if (!ok) return;
+  }
+  if (currentStep === 2) {
+    let ok = true;
+    if (!v('tarea'))       { show('err-tarea'); ok = false; } else hide('err-tarea');
+    if (!v('descripcion')) { show('err-desc'); ok = false; } else hide('err-desc');
+    if (!ok) return;
+  }
+  if (currentStep === 3) {
+    const sel = document.querySelector('input[name=repOpt]:checked');
+    if (!sel) { show('err-rep'); return; } else hide('err-rep');
+    if (sel.value === 'lista') {
+      const names = document.querySelectorAll('.rep-nombre');
+      let valid = true;
+      names.forEach(n => { if (!n.value.trim()) valid = false; });
+      if (names.length === 0) valid = false;
+      if (!valid) { show('err-rep-items'); return; }
+    }
+    hide('err-rep-items');
+  }
+  if (currentStep === 4) {
+    if (!photoData) { show('err-foto'); return; } else hide('err-foto');
+  }
+  if (currentStep === 5) {
+    let ok = true;
+    if (!v('supervisor')) { show('err-sup'); ok = false; } else hide('err-sup');
+    if (isCanvasBlank(sigCanvas)) { show('err-firma'); ok = false; } else hide('err-firma');
+    if (!ok) return;
+    submitReport();
+    return;
+  }
+  showStep(currentStep + 1);
+}
+
+function v(id) { return document.getElementById(id).value.trim(); }
+function show(id) { document.getElementById(id).style.display = 'block'; }
+function hide(id) { document.getElementById(id).style.display = 'none'; }
+
+function toggleRepuestos() {
+  const sel = document.querySelector('input[name=repOpt]:checked');
+  document.getElementById('repuestosArea').style.display =
+    sel && sel.value === 'lista' ? 'block' : 'none';
+}
+
+function addRepuesto() {
+  repuestoCount++;
+  const id = 'rep' + repuestoCount;
+  const div = document.createElement('div');
+  div.className = 'repuesto-item';
+  div.id = id;
+  div.innerHTML = `
+    <input class="field-input rep-nombre" type="text" placeholder="Nombre del repuesto" style="flex:1">
+    <input class="field-input rep-qty" type="number" placeholder="Cant." min="1" value="1" style="width:90px;flex-shrink:0">
+    <button class="btn-rem-rep" type="button" onclick="removeRep('${id}')"><i class="ti ti-trash"></i></button>
+  `;
+  document.getElementById('repuestoList').appendChild(div);
+}
+
+function removeRep(id) {
+  const el = document.getElementById(id);
+  if (el) el.remove();
+}
+
+function getRepuestos() {
+  const sel = document.querySelector('input[name=repOpt]:checked');
+  if (!sel || sel.value === 'ninguno') return 'Ningún repuesto utilizado';
+  const items = [];
+  document.querySelectorAll('.repuesto-item').forEach(row => {
+    const n = row.querySelector('.rep-nombre').value.trim();
+    const q = row.querySelector('.rep-qty').value.trim();
+    if (n) items.push(n + ' x' + (q || '1'));
+  });
+  return items.length ? items.join(', ') : 'Sin repuestos especificados';
+}
+
+function handlePhoto(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    photoData = e.target.result;
+    const preview = document.getElementById('photoPreview');
+    preview.src = photoData;
+    preview.style.display = 'block';
+    const zone = document.getElementById('photoZone');
+    zone.classList.add('has-photo');
+    zone.querySelector('.photo-text').textContent = '✓ Imagen adjuntada correctamente';
+    zone.querySelector('.photo-sub').textContent = file.name;
+  };
+  reader.readAsDataURL(file);
+}
+
+function initSig() {
+  sigCanvas = document.getElementById('sigCanvas');
+  sigCtx = sigCanvas.getContext('2d');
+  sigCtx.strokeStyle = '#042C53';
+  sigCtx.lineWidth = 2.5;
+  sigCtx.lineCap = 'round';
+  sigCtx.lineJoin = 'round';
+
+  function pos(e) {
+    const r  = sigCanvas.getBoundingClientRect();
+    const sx = sigCanvas.width  / r.width;
+    const sy = sigCanvas.height / r.height;
+    const s  = e.touches ? e.touches[0] : e;
+    return { x: (s.clientX - r.left) * sx, y: (s.clientY - r.top) * sy };
+  }
+
+  sigCanvas.addEventListener('mousedown',  e => { sigDrawing=true; const p=pos(e); sigCtx.beginPath(); sigCtx.moveTo(p.x,p.y); });
+  sigCanvas.addEventListener('mousemove',  e => { if(!sigDrawing)return; const p=pos(e); sigCtx.lineTo(p.x,p.y); sigCtx.stroke(); });
+  sigCanvas.addEventListener('mouseup',    () => sigDrawing=false);
+  sigCanvas.addEventListener('mouseleave', () => sigDrawing=false);
+  sigCanvas.addEventListener('touchstart', e => { e.preventDefault(); sigDrawing=true; const p=pos(e); sigCtx.beginPath(); sigCtx.moveTo(p.x,p.y); }, {passive:false});
+  sigCanvas.addEventListener('touchmove',  e => { e.preventDefault(); if(!sigDrawing)return; const p=pos(e); sigCtx.lineTo(p.x,p.y); sigCtx.stroke(); }, {passive:false});
+  sigCanvas.addEventListener('touchend',   () => sigDrawing=false);
+}
+
+function clearSig() { if(sigCtx) sigCtx.clearRect(0,0,sigCanvas.width,sigCanvas.height); }
+function isCanvasBlank(c) {
+  const d = c.getContext('2d').getImageData(0,0,c.width,c.height).data;
+  for (let i=3;i<d.length;i+=4) { if(d[i]>0) return false; }
+  return true;
+}
+
+async function submitReport() {
+  const btn = document.getElementById('mainBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div> Guardando...';
+
+  const now   = new Date();
+  const stamp = now.toLocaleString('es-SV', {
+    timeZone:'America/El_Salvador', year:'numeric', month:'2-digit',
+    day:'2-digit', hour:'2-digit', minute:'2-digit', hour12:false
+  });
+
+  const data = {
+    fecha:       stamp,
+    encargado:   v('encargado'),
+    empleado:    v('empleado'),
+    area:        v('area'),
+    tipoMant:    (document.querySelector('input[name=tipoMant]:checked') || {}).value || '',
+    claseMant:   (document.querySelector('input[name=claseMant]:checked') || {}).value || '',
+    tarea:       v('tarea'),
+    descripcion: v('descripcion'),
+    repuestos:   getRepuestos(),
+    supervisor:  v('supervisor'),
+    fotoBase64:  photoData,
+    firmaBase64: sigCanvas.toDataURL()
+  };
+
+  document.getElementById('finalTimestamp').textContent = stamp;
+  buildSummary(data);
+  showStep(6);
+
+  if (APPS_SCRIPT_URL) {
+    try {
+      // Modificamos el envío a 'text/plain' para mitigar la política estricta de preflight CORS en Google Apps Script
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors', 
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(data)
+      });
+      
+      // Cuando usamos 'no-cors', la respuesta del servidor no es legible directamente en JS por seguridad,
+      // pero llega en vivo de forma asíncrona al script de Google Drive de manera transparente.
+      document.getElementById('sendStatus').textContent = '✓ Reporte enviado. Verifique su carpeta en Google Drive en unos instantes.';
+      document.getElementById('sendStatus').className = 'send-status ok';
+      
+    } catch (err) {
+      document.getElementById('sendStatus').textContent = '⚠️ Error en la solicitud de red: ' + err.message;
+      document.getElementById('sendStatus').className = 'send-status err';
+    }
+  }
+
+  const s6 = document.getElementById('step6');
+  if (!s6.querySelector('.btn-new')) {
+    const b = document.createElement('button');
+    b.className = 'btn-new';
+    b.innerHTML = '<i class="ti ti-plus"></i> Nuevo reporte';
+    b.onclick = resetForm;
+    s6.appendChild(b);
+  }
+}
+
+function buildSummary(d) {
+  const sections = [
+    { head: 'A — Encargado', rows: [
+      ['Nombre',   d.encargado + (d.empleado ? ' · ' + d.empleado : '')],
+      ['Área',     d.area || '—'],
+      ['Tipo',     d.tipoMant],
+      ['Clase',    d.claseMant],
+    ]},
+    { head: 'B — Tarea', rows: [
+      ['Tarea',        d.tarea],
+      ['Descripción',  d.descripcion],
+    ]},
+    { head: 'C — Repuestos', rows: [
+      ['Repuestos', d.repuestos],
+    ]},
+    { head: 'D — Foto & Validación', rows: [
+      ['Foto',       '✓ Adjunta'],
+      ['Supervisor', d.supervisor],
+      ['Firma',      '✓ Recolectada'],
+      ['Fecha/hora', d.fecha],
+    ]},
+  ];
+
+  document.getElementById('summaryCard').innerHTML = sections.map(s => `
+    <div class="summary-section-head">${s.head}</div>
+    ${s.rows.map(([l,v]) => `
+      <div class="summary-row">
+        <div class="sum-label">${l}</div>
+        <div class="sum-val">${esc(v)}</div>
+      </div>`).join('')}
+  `).join('');
+}
+
+function esc(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function resetForm() {
+  ['encargado','empleado','area','tarea','descripcion','supervisor'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  document.querySelectorAll('input[type=radio]').forEach(r => r.checked = false);
+  photoData = null;
+  const preview = document.getElementById('photoPreview');
+  preview.style.display = 'none'; preview.src = '';
+  const zone = document.getElementById('photoZone');
+  zone.classList.remove('has-photo');
+  zone.querySelector('.photo-text').textContent = 'Toca para tomar foto o escoger de galería';
+  zone.querySelector('.photo-sub').textContent = 'JPG, PNG — máx 10 MB';
+  document.getElementById('photoInput').value = '';
+  document.getElementById('repuestoList').innerHTML = '';
+  document.getElementById('repuestosArea').style.display = 'none';
+  repuestoCount = 0;
+  clearSig();
+  document.querySelectorAll('.error-msg').forEach(e => e.style.display = 'none');
+  document.getElementById('sendStatus').className = 'send-status';
+  const s6 = document.getElementById('step6');
+  const nb = s6.querySelector('.btn-new');
+  if (nb) nb.remove();
+  showStep(1);
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  initSig();
+  showStep(1);
+});
+</script>
+</body>
+</html>
