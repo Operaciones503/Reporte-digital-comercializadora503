@@ -857,7 +857,7 @@
 </div>
 
 <script>
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwrFQSVVPAVEwVqq1CnwmjG3XYEr5Wdc9I5svZnZvOhIqWlQ4YBrjGvVie0cGC8hGOm/exec'; 
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz_f7UZFnxSF-2RzI5CeZGaEYCXI_OiQuryzyf3ZnhjLgexiZWO4QkF5YMw-B2yagRH/exec'; 
 
 let currentStep = 1;
 let photoData = null;
